@@ -9,7 +9,7 @@ const { BadRequestError } = require('../errors/bad-request-error');
 const { ConflictError } = require('../errors/conflict-error');
 
 module.exports.getUser = (req, res, next) => {
-  const { userId } = req.params;
+  const userId = req.user._id;
   User.findById(userId)
     .orFail(() => new NotFoundError('Пользователь с указанным id не существует'))
     .then((user) => {
@@ -26,17 +26,15 @@ module.exports.getUser = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const {
-    name, about, avatar, email,
+    name, email,
   } = req.body;
 
   bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
+      name, email, password: hash,
     }))
     .then((user) => res.status(201).send({
       name: user.name,
-      about: user.about,
-      avatar: user.avatar,
       email: user.email,
     }))
     .catch((err) => {
@@ -75,9 +73,9 @@ module.exports.login = (req, res, next) => {
 module.exports.updateUser = (req, res, next) => {
   // eslint-disable-next-line no-underscore-dangle
   const userId = req.user._id;
-  const { name, about } = req.body;
+  const { name, email } = req.body;
 
-  User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(userId, { name, email }, { new: true, runValidators: true })
     .then((user) => {
       res.send(user);
     })

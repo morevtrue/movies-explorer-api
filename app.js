@@ -20,12 +20,13 @@ const { validateUserBody, validateAuthentification } = require('./middlewares/va
 const { errorHandler } = require('./middlewares/error-handler');
 const auth = require('./middlewares/auth');
 const { NotFoundError } = require('./errors/not-found-error');
+const { MONGO_DB_URL } = require('./utils/config');
 
-const { PORT = 3000, DB_URL = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
+const { PORT = 3000, DB_URL = MONGO_DB_URL } = process.env;
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3000/',
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
 app.use(cookieParser());
@@ -48,7 +49,7 @@ app.get('/crash-test', () => {
 });
 
 app.post('/signin', validateUserBody, login);
-app.post('signup', validateAuthentification, createUser);
+app.post('/signup', validateAuthentification, createUser);
 
 app.use(auth);
 app.use('/', require('./routes/users'));

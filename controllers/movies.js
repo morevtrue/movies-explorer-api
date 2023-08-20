@@ -7,12 +7,10 @@ const { ForbiddenError } = require('../errors/forbidden-error');
 module.exports.getMovies = (req, res, next) => {
   // eslint-disable-next-line no-underscore-dangle
   const userId = req.user._id;
-  Movie.find({})
+  // console.log(userId);
+  Movie.find({ owner: userId })
     .then((movie) => {
-      // eslint-disable-next-line no-underscore-dangle
-      if (userId === movie.owner._id.toString()) {
-        res.send(movie);
-      }
+      res.send(movie);
     })
     .catch(next);
 };
@@ -20,7 +18,7 @@ module.exports.getMovies = (req, res, next) => {
 module.exports.createMovie = (req, res, next) => {
   const {
     country, director, duration, year, description,
-    image, trailer, nameRU, nameEN, thumbnail, movieId,
+    image, trailerLink, nameRU, nameEN, thumbnail, movieId,
   } = req.body;
   // eslint-disable-next-line no-underscore-dangle
   const userId = req.user._id;
@@ -32,7 +30,7 @@ module.exports.createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -50,21 +48,19 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  const { movieId } = req.body;
-  // eslint-disable-next-line no-underscore-dangle
+  const { cardId } = req.params;
   const userId = req.user._id;
 
-  Movie.findById(movieId)
-    .orFail(() => new NotFoundError('Фильм с указанным id не существует'))
-    .then((movie) => {
-      // eslint-disable-next-line no-underscore-dangle
-      if (userId !== movie.owner._id.toString()) {
-        throw new ForbiddenError('Фильм не принадлежит пользователю');
+  Movie.findById(cardId)
+    .orFail(() => new NotFoundError('Карточка с указанным id не существует'))
+    .then((card) => {
+      if (userId !== card.owner._id.toString()) {
+        throw new ForbiddenError('карточка не принадлежит пользователю');
       } else {
-        Movie.findByIdAndRemove(movieId)
-          .orFail(() => new NotFoundError('Фильм с указанным id не существует'))
-          .then((movieCurrentUser) => {
-            res.send(movieCurrentUser);
+        Movie.findByIdAndRemove(cardId)
+          .orFail(() => new NotFoundError('Карточка с указанным id не существует'))
+          .then((cardCurrentUser) => {
+            res.send(cardCurrentUser);
           })
           .catch((err) => {
             if (err.name === 'CastError') {
