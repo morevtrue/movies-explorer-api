@@ -56,6 +56,7 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
+        // eslint-disable-next-line no-underscore-dangle
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
         { expiresIn: '7d' },
@@ -72,6 +73,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
+  // eslint-disable-next-line no-underscore-dangle
   const userId = req.user._id;
   const { name, about } = req.body;
 
