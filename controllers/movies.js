@@ -49,7 +49,7 @@ module.exports.createMovie = (req, res, next) => {
     });
 };
 
-module.exports.deleteCard = (req, res, next) => {
+module.exports.deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   // eslint-disable-next-line no-underscore-dangle
   const userId = req.user._id;
