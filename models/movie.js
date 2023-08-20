@@ -48,20 +48,20 @@ const movieSchema = new mongoose.Schema(
       required: [true, 'Поле "thumbnail" должно быть заполнено'],
     },
     owner: {
-      type: mongoose.Schema.Types.Number,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     moviedId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.Number,
       required: true,
     },
-    likes: [{
-      type: mongoose.Schema.Types.ObjectId,
-      default: [],
-    }],
-    createdAt: {
-      type: Date,
-      default: Date.now,
+    nameRU: {
+      type: String,
+      required: [true, 'Поле "nameRU" должно быть заполнено'],
+    },
+    nameEN: {
+      type: String,
+      required: [true, 'Поле "nameEN" должно быть заполнено'],
     },
   },
   {
