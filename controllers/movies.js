@@ -50,7 +50,7 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  const { movieId } = req.params;
+  const { movieId } = req.body;
   // eslint-disable-next-line no-underscore-dangle
   const userId = req.user._id;
 
