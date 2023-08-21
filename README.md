@@ -40,10 +40,10 @@
 
 ## Системные требования
 
-GIT v2.33.0, NodeJS v16.16.0, ReactJS v5.0.1, MongoDB v4.4.23
+`GIT` v2.33.0, `NodeJS` v16.16.0, `ReactJS` v5.0.1, `MongoDB` v4.4.23
 
 ## Ссылки на проект
 
-IP 62.84.125.49
+`IP` 62.84.125.49
 
-Backend api.moviesmorev.students.nomoredomainsicu.ru
+`Backend` api.moviesmorev.students.nomoredomainsicu.ru
