@@ -5,9 +5,7 @@ const { BadRequestError } = require('../errors/bad-request-error');
 const { ForbiddenError } = require('../errors/forbidden-error');
 
 module.exports.getMovies = (req, res, next) => {
-  // eslint-disable-next-line no-underscore-dangle
   const userId = req.user._id;
-  // console.log(userId);
   Movie.find({ owner: userId })
     .then((movie) => {
       res.send(movie);
@@ -20,7 +18,6 @@ module.exports.createMovie = (req, res, next) => {
     country, director, duration, year, description,
     image, trailerLink, nameRU, nameEN, thumbnail, movieId,
   } = req.body;
-  // eslint-disable-next-line no-underscore-dangle
   const userId = req.user._id;
 
   Movie.create({
