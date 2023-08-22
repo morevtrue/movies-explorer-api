@@ -6,21 +6,14 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const rateLimit = require('express-rate-limit');
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standartHeaders: true,
-  legacyHeaders: false,
-});
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { login, createUser } = require('./controllers/users');
 const { validateUserBody, validateAuthentification } = require('./middlewares/validations');
 const { errorHandler } = require('./middlewares/error-handler');
 const auth = require('./middlewares/auth');
 const { NotFoundError } = require('./errors/not-found-error');
-const { MONGO_DB_URL } = require('./utils/config');
+const { MONGO_DB_URL, limiter } = require('./utils/config');
 
 const { PORT = 3000, DB_URL = MONGO_DB_URL } = process.env;
 const app = express();
@@ -59,14 +52,13 @@ app.get('/signout', (req, res) => {
   res.clearCookie('jwt').send({ message: 'Выход' });
 });
 
-app.use(errorLogger);
-
 app.use((req, res, next) => next(new NotFoundError('неправильно указан путь')));
+
+app.use(errorLogger);
 
 app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
   console.log(`app listening on port ${PORT}`);
 });
