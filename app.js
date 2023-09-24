@@ -19,7 +19,7 @@ const { PORT = 3000, DB_URL = MONGO_DB_URL } = process.env;
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://movies-morevtrue.students.nomoredomainsicu.ru',
   credentials: true,
 }));
 app.use(cookieParser());
